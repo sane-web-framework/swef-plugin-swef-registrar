@@ -1,0 +1,10 @@
+<?php
+
+// Configurable constants
+define ( 'swefregistrar_uri_register',       '/register'                            );
+define ( 'swefregistrar_uri_password',       '/password'                            );
+define ( 'swefregistrar_form_posted',        'swefregistrar-posted'                 );
+define ( 'swefregistrar_form_email',         'swefregistrar-email'                  );
+define ( 'swefregistrar_form_password',      'swefregistrar-password'               );
+
+?>

@@ -1,0 +1,55 @@
+<?php if($this->requestURI=='/register'): ?>
+
+<form class="register" method="post" action="">
+  <div class="input">
+    <input placeholder="[<t en>Email</t>]" type="email" name="email" />
+  </div>
+  <div class="input">
+    <input placeholder="<t en>Password</t>" type="password" name="password" pattern="(?=.*\d)(?=.*[A-Za-z])(?=.*[^A-Za-z0-9]).{8,}" title="<t en>Password: minimum of 8 characters with at least one letter, number and special character</t>" />
+  </div>
+  <div class="input">
+    <input placeholder="[<t en>Confirm password</t>]" type="password" name="pwd-repeat" title="<t en>Confirm password: must match password</t>" onblur="if(this.value && this.value!=this.form.password.value){this.setCustomValidity(this.title)}" />
+  </div>
+  <div class="input">
+    <input type="submit" value="<t en>Register</t>" />
+  </div>
+  <input type="hidden" name="usergroup" value="public" />
+</form>
+
+<?php elseif($this->requestURI=='/password'): ?>
+
+<form class="password" method="post" action="">
+  <div class="input">
+    <label for="register-email"></label>
+    <input placeholder="[<t en>Email</t>]" type="email" name="email" />
+  </div>
+  <div class="input">
+    <label>&nbsp;</label>
+    <input type="submit" value="<t en>Reset password</t>" />
+  </div>
+  <input type="hidden" name="usergroup" value="public" />
+  <input type="hidden" name="usergroup" value="public" />
+</form>
+
+<?php elseif($this->requestURI=='/verify'): ?>
+<?php
+          if (false==($secret=$_SERVER['QUERY_STRING'])) {
+              $secret = $this->_POST ('secret');
+          }
+?>
+
+<form class="verify" method="post" action="./password">
+  <div class="input">
+    <label for="secret"></label>
+    <input placeholder="[<t en>Email</t>]" type="email" name="secret" />
+  </div>
+  <div class="input">
+    <label>&nbsp;</label>
+    <input type="submit" value="<t en>Reset password</t>" />
+  </div>
+  <input type="hidden" name="usergroup" value="public" />
+  <input type="hidden" name="usergroup" value="public" />
+</form>
+
+<?php endif; ?>
+
