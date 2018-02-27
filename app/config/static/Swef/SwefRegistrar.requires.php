@@ -1,11 +1,11 @@
 <?php
 
 // SYSTEM CONSTANTS
-require_once SWEF_CONFIG_PATH.'/static/Swef/SwefRegistrar.defines.php';
+require_once SWEF_DIR_CONFIG.'/static/Swef/SwefRegistrar.defines.php';
 
 
 // CONFIGURABLE CONSTANTS
-require_once SWEF_CONFIG_PATH.'/user/Swef/SwefRegistrar.config.php';
+require_once SWEF_DIR_CONFIG.'/user/Swef/SwefRegistrar.config.php';
 
 
 // PLUGINS
