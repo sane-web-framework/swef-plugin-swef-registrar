@@ -1,8 +1,7 @@
 <?php
 
-
 // Stored procedures
-define ( 'swefregistrar_call_may_self_reg',  'swefRegistrarMaySelfRegister'                     );
+define ( 'swefregistrar_call_context',  'swefRegistrarContext'                                  );
 
 
 // Other tokens

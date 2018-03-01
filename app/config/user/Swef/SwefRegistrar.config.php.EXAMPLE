@@ -1,12 +1,27 @@
 <?php
 
-// Configurable constants
-define ( 'swefregistrar_uri_register',       '/register'                            );
-define ( 'swefregistrar_uri_password',       '/password'                            );
-define ( 'swefregistrar_shortcut_in',        '/register-login'                      );
-define ( 'swefregistrar_shortcut_out',       '/register-logout'                     );
-define ( 'swefregistrar_form_posted',        'swefregistrar-posted'                 );
-define ( 'swefregistrar_form_email',         'swefregistrar-email'                  );
-define ( 'swefregistrar_form_password',      'swefregistrar-password'               );
+// Post field names
+define ( 'swefregistrar_has_post',            'swefregistrar-posting'                );
+define ( 'swefregistrar_fld_eml_cur',         'swefregistrar-email-current'          );
+define ( 'swefregistrar_fld_eml_new',         'swefregistrar-email-new'              );
+define ( 'swefregistrar_fld_pwd_cur',         'swefregistrar-password-current'       );
+define ( 'swefregistrar_fld_pwd_new',         'swefregistrar-password-new'           );
+define ( 'swefregistrar_fld_pwd_cfm',         'swefregistrar-password-confirm'       );
+
+// Shortcut URIs for states
+define ( 'swefregistrar_sct_reg',             '/register'                            );
+define ( 'swefregistrar_sct_regd',            '/registered'                          );
+define ( 'swefregistrar_sct_eml_vfy',         '/email-verify'                        );
+define ( 'swefregistrar_sct_eml_vfyd',        '/email-verified'                      );
+define ( 'swefregistrar_sct_pwd_chg',         '/password-change'                     );
+define ( 'swefregistrar_sct_pwd_chgd',        '/password-changed'                    );
+
+// Methods for states
+define ( 'swefregistrar_mtd_reg',             'memberRegister'                       );
+define ( 'swefregistrar_mtd_regd',            'reportResult'                         );
+define ( 'swefregistrar_mtd_eml_vfy',         'emailVerify'                          );
+define ( 'swefregistrar_mtd_eml_vfyd',        'reportResult'                         );
+define ( 'swefregistrar_mtd_pwd_chg',         'passwordChange'                       );
+define ( 'swefregistrar_mtd_pwd_chgd',        'reportResult'                         );
 
 ?>

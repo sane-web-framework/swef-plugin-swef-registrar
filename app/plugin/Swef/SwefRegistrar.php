@@ -9,7 +9,8 @@ class SwefRegistrar extends \Swef\Bespoke\Plugin {
     PROPERTIES
 */
 
-    public  $doRegister;
+    public  $context;
+    public  $method;
 
 
 /*
@@ -27,76 +28,68 @@ class SwefRegistrar extends \Swef\Bespoke\Plugin {
     }
 
     public function _on_pageIdentifyBefore ( ) {
-        if ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_shortcut_in) {
-            $this->doRegister = SWEF_BOOL_TRUE;
+        if ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_reg) {
+            $this->method = swefregistrar_mtd_reg;
         }
-        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_shortcut_out) {
-            $this->page->swef->userLogout ();
-            $this->page->reload (SWEF_STR__FSLASH);
+        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_regd) {
+            $this->method = swefregistrar_mtd_regd;
         }
-        return SWEF_BOOL_TRUE;
+        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_eml_vfy) {
+            $this->method = swefregistrar_mtd_eml_vfy;
+        }
+        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_eml_vfyd) {
+            $this->method = swefregistrar_mtd_eml_vfyd;
+        }
+        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_pwd_chg) {
+            $this->method = swefregistrar_mtd_pwd_chg;
+        }
+        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_sct_pwd_chgd) {
+            $this->method = swefregistrar_mtd_pwd_chgd;
+        }
+        else {
+            return SWEF_BOOL_TRUE;
+        }
+        if (!method_exists($this,$this->method)) {
+            $this->method = null;
+            return SWEF_BOOL_TRUE;
+        }
+        $this->context = $this->page->swef->db->dbCall (
+            swefregistrar_call_context
+           ,$this->page->swef->context[SWEF_COL_CONTEXT]
+        );
+        if (!is_array($this->context)) {
+            $this->method = null;
+            return SWEF_BOOL_TRUE;
+        }
+        return SWEF_BOOL_FALSE;
     }
 
     public function _on_pageScriptBefore ( ) {
-        // Already logged in
-        if ($this->page->swef->userLoggedIn()) {
-            $this->page->diagnosticAdd ('User already logged in');
+        if (!$this->method) {
             return SWEF_BOOL_TRUE;
         }
-        // Posted login data
-        if (array_key_exists(swefregistrar_form_posted,$_POST)) {
-            if (array_key_exists(swefregistrar_form_email,$_POST)) {
-                if (array_key_exists(swefregistrar_form_password,$_POST)) {
-                    $this->page->swef->notificationPurge ();
-                    $this->page->diagnosticAdd ('Processing posted login form...');
-                    $email  = $this->page->swef->userRegistrar (
-                                  $_POST[swefregistrar_form_email]
-                                 ,$_POST[swefregistrar_form_password]
-                              );
-                    if ($email) {
-                        $uri        = null;
-                        if ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_shortcut_in) {
-                            $uri = SWEF_STR__FSLASH;
-                        }
-                        elseif ($_SERVER[SWEF_STR_REQUEST_URI]==swefregistrar_shortcut_out) {
-                            $uri = SWEF_STR__FSLASH;
-                        }
-                        $this->page->diagnosticAdd ('Registrar successful - reloading page');
-                        $this->page->reload ();
-                    }
-                    $this->page->diagnosticAdd ('Posted login attempt failed');
-                }
-            }
-        }
-        // Test for login intervention
-        if (!$this->doRegister) {
-            if ($this->page->httpE==SWEF_HTTP_STATUS_CODE_403) {
-                if ($this->page->swef->context[SWEF_COL_LOGIN_ON_403]) {
-                    $this->page->diagnosticAdd ('Context requires login on 403');
-                    $this->doRegister = SWEF_BOOL_TRUE;
-                }
-                else {
-                    $this->page->diagnosticAdd ('Context does not require login on 403');
-                }
-            }
-            if ($this->page->swef->context[SWEF_COL_LOGIN_ALWAYS]) {
-                $this->page->diagnosticAdd ('Context requires login ALWAYS');
-                $this->doRegister = SWEF_BOOL_TRUE;
-            }
-            if (!$this->doRegister) {
-                $this->page->diagnosticAdd ('Registrar is not required');
-                return SWEF_BOOL_TRUE;
-            }
-        }
-        $this->page->diagnosticAdd ('Intervening in context '.$this->page->swef->context[SWEF_COL_CONTEXT]);
-        $this->page->diagnosticAdd ('Setting template = '.$this->config[SWEF_COL_TEMPLATE]);
-        $this->page->template = array (
-            SWEF_COL_TEMPLATE     =>$this->config[SWEF_COL_TEMPLATE]
-           ,SWEF_COL_CONTENTTYPE  =>$this->config[SWEF_COL_CONTENTTYPE]
-        );
-        $this->page->diagnosticAdd ('Inserting login form '.swefregistrar_file_password);
-        require swefregistrar_file_password;
+        $method = $this->method;
+        $this->$method ();
         return SWEF_BOOL_FALSE;
+    }
+
+
+
+/*
+    REGISTRAR PROCESS METHODS
+*/
+
+
+    public function emailVerify ( ) {
+    }
+
+    public function memberRegister ( ) {
+    }
+
+    public function passwordChange ( ) {
+    }
+
+    public function reportResult ( ) {
     }
 
 
